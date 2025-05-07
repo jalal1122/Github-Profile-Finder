@@ -67,7 +67,7 @@ github-profile-finder/
 
 ## 📸 Screenshots
 
-![App Screenshot](./linkedin%20post%20data/thumbnail.png)
+![App Screenshot](./thumbnail.png)
 
 ## 👨‍💻 Author
 
