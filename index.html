@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link href="./src/output.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div
+      class="flex flex-col items-center p-5 gap-8 w-full h-screen bg-linear-to-r from-[#BAECC9] to-[#F0ED9E]"
+    >
+      <h1 class="text-[#FA6F70] text-5xl font-bold">Github Profile Finder</h1>
+      <input
+        type="text"
+        id="username"
+        placeholder="Enter GitHub username"
+        class="bg-amber-100 px-5 py-2 text-xl rounded-xl"
+      />
+      <button
+        onclick="getUser()"
+        class="px-5 py-3 text-xl font-bold text-white rounded-xl bg-gradient-to-r from-[#2C1462] via-[#A9126D] to-[#FFB01E]"
+      >
+        Search Github User
+      </button>
+      <div
+        id="profile"
+        class="flex sm:flex-row flex-col justify-center items-center p-2 gap-3 md:w-1/2 w-3/4 bg-gray-200 shadow-lg hidden rounded-xl"
+      ></div>
+    </div>
+  </body>
+  <script>
+    function getUser() {
+      const username = document.getElementById("username").value;
+      const url = `https://api.github.com/users/${username}`;
+      const profileDiv = document.getElementById("profile");
+
+      profileDiv.classList.remove("hidden");
+
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("User not found");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          profileDiv.innerHTML = `<div class="left">
+          <img src="${data.avatar_url}" class="rounded-full" alt="${data.name}" width="100" />
+          <a href="${data.html_url}" class="text-[#351763]" target="_blank">View Profile</a>
+        </div>
+        <div class="right">
+            <h2 class="text-xl font-semibold">${data.name}</h2>
+            <p class="text-[16px]">${data.bio}</p>
+            <div class="flex gap-2 sm:flex-row flex-col">
+                <p class="font-bold">${data.followers} <span class="font-semibold">Followers</span></p>
+                <p class="font-bold">${data.following} <span class="font-semibold">Following</span></p>
+                <p class="font-bold">${data.public_repos} <span class="font-semibold">Respositories</span></p>
+            </div>
+        </div>`;
+        })
+        .catch((err) => {
+          profileDiv.innerHTML = `<p style="color:red;">${err.message}</p>`;
+        });
+    }
+  </script>
+</html>
